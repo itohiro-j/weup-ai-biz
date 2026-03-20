@@ -240,12 +240,28 @@
       line-height: 1.85;
     }
 
+    .profile-name {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
     .profile-intro strong { color: var(--white); }
 
-    .track-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+    .track-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 32px;
+    }
+
+    .track-column h3 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 12px;
+      text-transform: uppercase;
     }
 
     .track-item {
@@ -337,6 +353,7 @@
       .section { padding: 72px 24px; }
       .way-item { grid-template-columns: 1fr; gap: 16px; }
       .way-num { font-size: 32px; }
+      .track-columns { grid-template-columns: 1fr; gap: 32px; }
       .cta-section { padding: 80px 24px; }
     }
   </style>
@@ -404,29 +421,31 @@
     <h2>「作れる」根拠があります</h2>
     <div class="profile-block">
       <div class="profile-intro">
-        代表の伊藤は、<strong>メルカリでのプロダクト開発</strong>を経て独立。現在は自社AIプロダクトを2本運営しながら、企業・大学への開発支援を行っています。<br><br>
-        自分たちも同じ課題を抱えながら作っている——だから、事業の現実を語れます。
+        <p class="profile-name"><strong>伊藤 宏志</strong>｜WE UP 代表</p>
+        <p>高専・筑波大学で電気電子・情報工学を学び、2018年に株式会社メルカリへ新卒入社。子会社ソウゾウでの新規事業「メルカリNOW」の立ち上げやカスタマーサービス改善を担当し、金融事業メルペイでは不正検知システム・与信事業のプロダクトマネージャーを務める。2021年、WE UPを創業。</p>
       </div>
-      <div class="track-list">
-        <div class="track-item">
-          <div class="track-dot"></div>
-          <p><strong>メルカリ</strong> — プロダクト開発・グロース業務に従事</p>
+      <div class="track-columns">
+        <div class="track-column">
+          <h3>企業向け支援実績</h3>
+          <div class="track-item">
+            <div class="track-dot"></div>
+            <p><strong>京都芸術大学</strong> — AI電話組み込みサポート、問い合わせ対応のAI自動化</p>
+          </div>
+          <div class="track-item">
+            <div class="track-dot"></div>
+            <p>その他、企業向けAI開発実績あり</p>
+          </div>
         </div>
-        <div class="track-item">
-          <div class="track-dot"></div>
-          <p><strong>大学・研究機関向け</strong>システム開発支援</p>
-        </div>
-        <div class="track-item">
-          <div class="track-dot"></div>
-          <p><strong>企業向け AIキャラクター会話システム</strong>の設計・開発</p>
-        </div>
-        <div class="track-item">
-          <div class="track-dot"></div>
-          <p><strong>Toonya for Kids</strong> — 子ども向けAI学習プロダクト（自社開発・運営中）</p>
-        </div>
-        <div class="track-item">
-          <div class="track-dot"></div>
-          <p><strong>Toonya for All Learners</strong> — 学習者向けAIプロダクト（自社開発・運営中）</p>
+        <div class="track-column">
+          <h3>自社AIサービス</h3>
+          <div class="track-item">
+            <div class="track-dot"></div>
+            <p><strong>YOMO</strong> — 自社AIサービス（開発・運営中）</p>
+          </div>
+          <div class="track-item">
+            <div class="track-dot"></div>
+            <p><strong>Komit</strong> — 自社AIサービス（開発・運営中）</p>
+          </div>
         </div>
       </div>
     </div>
