@@ -357,20 +357,19 @@
       z-index: 100;
       display: flex;
       align-items: center;
-      gap: 10px;
-      opacity: 0.6;
+      gap: 12px;
     }
 
     .bottom-logo svg {
-      height: 36px;
+      height: 40px;
       width: auto;
     }
 
     .bottom-logo .logo-text {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
-      color: var(--white);
-      letter-spacing: 0.08em;
+      color: #ffffff;
+      letter-spacing: 0.1em;
     }
   </style>
 </head>
@@ -708,15 +707,17 @@
 </div>
 
 <div class="bottom-logo">
-  <svg viewBox="0 0 82 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 100 72" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0.8">
-        <stop offset="0%" stop-color="#2ab888"/>
-        <stop offset="100%" stop-color="#4eeab8"/>
+      <linearGradient id="grnG" x1="0.15" y1="0" x2="0.85" y2="1">
+        <stop offset="0%" stop-color="#25b080"/>
+        <stop offset="100%" stop-color="#40dda8"/>
       </linearGradient>
     </defs>
-    <polygon points="0,0 30,0 15,52" fill="#ffffff"/>
-    <polygon points="18,0 68,0 43,68" fill="url(#greenGrad)"/>
+    <!-- White triangle (left, smaller) -->
+    <polygon points="2,2 36,2 19,54" fill="#ffffff"/>
+    <!-- Green triangle (right, larger, overlapping) -->
+    <polygon points="22,2 78,2 50,72" fill="url(#grnG)"/>
   </svg>
   <span class="logo-text">WE UP</span>
 </div>
