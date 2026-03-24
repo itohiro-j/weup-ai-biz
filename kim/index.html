@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI × FM 提案資料 | WE UP</title>
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f5f5;
+      --accent: #4a9eff;
+      --gray: rgba(255,255,255,0.5);
+      --dim: rgba(255,255,255,0.7);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      padding: 60px 80px;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide.active { display: flex; }
+
+    /* Title slide */
+    .slide-title h1 {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .slide-title h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #4a9eff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-title .subtitle {
+      font-size: clamp(16px, 2vw, 24px);
+      color: var(--dim);
+      margin-bottom: 48px;
+    }
+
+    .slide-title .company {
+      font-size: 16px;
+      color: var(--gray);
+      letter-spacing: 0.1em;
+    }
+
+    /* Content slides */
+    .slide-content .slide-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .slide-content h2 {
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .slide-content h2 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #4a9eff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-content .lead {
+      font-size: clamp(16px, 1.8vw, 22px);
+      color: var(--dim);
+      margin-bottom: 48px;
+      max-width: 800px;
+      line-height: 1.7;
+    }
+
+    /* Cards grid */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--white);
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(74, 158, 255, 0.15);
+      color: var(--accent);
+      margin-top: 12px;
+    }
+
+    /* Feature slide (image left, text right) */
+    .feature-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .feature-visual {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .feature-visual .mock {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .feature-visual .mock-highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .feature-points {
+      list-style: none;
+    }
+
+    .feature-points li {
+      font-size: 17px;
+      color: var(--dim);
+      line-height: 1.7;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      gap: 12px;
+    }
+
+    .feature-points li:last-child { border-bottom: none; }
+
+    .feature-points .bullet {
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .flow-step .step-icon { font-size: 28px; margin-bottom: 8px; }
+    .flow-step .step-text { font-size: 14px; color: var(--dim); }
+    .flow-step .step-text strong { color: var(--white); }
+    .flow-arrow { font-size: 24px; color: var(--gray); }
+
+    /* Table */
+    .slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .slide-table th {
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 0.06em;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .slide-table td {
+      font-size: 16px;
+      color: var(--dim);
+      padding: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.6;
+    }
+
+    .slide-table td strong { color: var(--white); }
+    .slide-table .recommended {
+      background: rgba(74, 158, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    /* Impact numbers */
+    .impact-row {
+      display: flex;
+      gap: 48px;
+      margin-top: 24px;
+    }
+
+    .impact-item .impact-num {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #4a9eff, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .impact-item .impact-label {
+      font-size: 15px;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 24px;
+      right: 32px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav button {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--white);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .nav button:hover { background: rgba(255,255,255,0.15); }
+
+    .nav .page-num {
+      font-size: 13px;
+      color: var(--gray);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* Profile */
+    .profile-row {
+      display: flex;
+      gap: 40px;
+      margin-top: 8px;
+    }
+
+    .profile-info h3 { font-size: 22px; margin-bottom: 8px; }
+    .profile-info p { font-size: 15px; color: var(--dim); line-height: 1.8; }
+
+    .track-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .track-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .track-card .track-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .track-card p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    /* Community slide specific */
+    .community-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .comm-feat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .comm-feat .feat-icon { font-size: 28px; margin-bottom: 12px; }
+    .comm-feat h4 { font-size: 16px; margin-bottom: 8px; }
+    .comm-feat p { font-size: 14px; color: var(--dim); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide slide-title active" data-slide="1">
+  <p class="company">WE UP Inc.</p>
+  <h1>AI <em>x</em> ファシリティマネジメントで<br>次の事業をつくる</h1>
+  <p class="subtitle">御社の強み x AIで、業界の「当たり前」を変えるパートナーシップのご提案</p>
+  <p class="company" style="margin-top: 48px;">2026.03.24 | Confidential</p>
+</div>
+
+<!-- Slide 2: WE UP -->
+<div class="slide slide-content" data-slide="2">
+  <p class="slide-label">About WE UP</p>
+  <h2>コンサルでも開発会社でもない。<br><em>自分たちもAIプロダクトを作っている</em>チーム。</h2>
+  <p class="lead">PowerPointではなく、動くものを作る。事業の現実を知っているから、一緒に走れる。</p>
+  <div class="profile-row">
+    <div class="profile-info">
+      <h3>伊藤 宏志 / 代表</h3>
+      <p>高専・筑波大学で情報工学を学び、2018年メルカリに新卒入社。<br>新規事業「メルカリNOW」立ち上げ、メルペイで不正検知・与信事業のPMを務める。<br>2021年、WE UP創業。</p>
+    </div>
+  </div>
+  <div class="track-grid">
+    <div class="track-card">
+      <div class="track-label">自社AIサービス</div>
+      <p><strong>YOMO</strong> — AI音読アプリ（音声AI x 子どもの読書習慣）<br><strong>Komit</strong> — AI学習集中アプリ（AIカメラ x スマホ制御）</p>
+    </div>
+    <div class="track-card">
+      <div class="track-label">企業向け支援実績</div>
+      <p><strong>京都芸術大学</strong> — AI電話対応・問い合わせ自動化<br>その他、企業向けAI開発実績あり</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Try with Kim's business first -->
+<div class="slide slide-content" data-slide="3">
+  <p class="slide-label">Proposal</p>
+  <h2>「<em>これがあったら喜ばれる</em>」を<br>まず作ってみませんか</h2>
+  <p class="lead">提案書を持っていく前に、動くものを先に作る。<br>事業者が「これ欲しい」と思うプロダクトを一緒に設計して、早期に形にする。</p>
+  <div class="flow" style="justify-content: center; gap: 20px; margin-bottom: 40px;">
+    <div class="flow-step" style="min-width: 160px;">
+      <div class="step-icon">💭</div>
+      <div class="step-text"><strong>アイデア出し</strong><br>事業者に喜ばれそうな<br>ものを一緒に設計</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="min-width: 160px;">
+      <div class="step-icon">🛠️</div>
+      <div class="step-text"><strong>早期に構築</strong><br>1-2週間で<br>動くものを作る</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="min-width: 160px;">
+      <div class="step-icon">✅</div>
+      <div class="step-text"><strong>価値を確認</strong><br>実際に触って<br>「これは使える」を実感</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="min-width: 160px;">
+      <div class="step-icon">🚀</div>
+      <div class="step-text"><strong>企業へ提案</strong><br>動くものベースで<br>説得力のある提案に</div>
+    </div>
+  </div>
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>動くもので提案できる</h3>
+      <p>PowerPointの企画書ではなく、実際に触れるプロダクトを見せる。意思決定のスピードが変わる。</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📣</div>
+      <h3>Kimさんが推薦者になれる</h3>
+      <p>「こういうものを一緒に作ったんですが」と自信を持って紹介できる。営業トークより強い。</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>小さく始めてリスクを抑える</h3>
+      <p>うまくいけばそのまま提案に。合わなければ方向転換。大きな投資の前に検証できる。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: What AI Can Do Now -->
+<div class="slide slide-content" data-slide="4">
+  <p class="slide-label">AI x FM</p>
+  <h2>いま、AIで<em>ここまで</em>できます</h2>
+  <p class="lead">ChatGPTの「テキスト対話」の先へ。写真・音声・電話・リアルタイム分析まで、業務に直結するAI活用。</p>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📸</div>
+      <h3>写真→点検レポート自動生成</h3>
+      <p>設備の写真を撮るだけで、状態判定・異常検知・報告書を自動作成。手書き・Excel転記が不要に。</p>
+      <div class="tag">画像AI x 構造化出力</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📞</div>
+      <h3>AI電話エージェント</h3>
+      <p>テナントからの電話をAIが24時間応対。状況ヒアリング→対応チケット自動起票→担当者に通知。</p>
+      <div class="tag">音声AI x 業務自動化</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h3>設備図面・マニュアルAI検索</h3>
+      <p>「3階の空調の型番は？」と聞くだけで即回答。PDF・図面・台帳を横断検索。ベテラン依存を解消。</p>
+      <div class="tag">RAG x ドキュメント理解</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Photo → Report -->
+<div class="slide slide-content" data-slide="5">
+  <p class="slide-label">Solution 01</p>
+  <h2>写真を撮るだけで<br><em>点検レポート</em>が完成</h2>
+  <div class="feature-layout">
+    <div class="feature-visual">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-icon">📱</div>
+          <div class="step-text"><strong>写真撮影</strong><br>現場でスマホで撮る</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">🤖</div>
+          <div class="step-text"><strong>AI分析</strong><br>状態判定・異常検知</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="step-icon">📋</div>
+          <div class="step-text"><strong>レポート出力</strong><br>業務フォーマットで納品</div>
+        </div>
+      </div>
+      <div class="mock" style="margin-top: 24px;">
+        <span class="mock-highlight">■ 点検レポート #2026-0324</span><br>
+        設備: 空調室外機 3F-AC-02<br>
+        状態: <span class="mock-highlight">要注意（劣化レベル: 中）</span><br>
+        所見: 外装に腐食あり。フィン部分に汚れ蓄積。<br>
+        推奨対応: <span class="mock-highlight">3ヶ月以内にメンテナンス実施</span><br>
+        緊急度: ★★★☆☆
+      </div>
+    </div>
+    <div>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span> 1件あたり30-60分の作業が<strong>5分に短縮</strong></li>
+        <li><span class="bullet">02</span> 判定基準が統一され、<strong>属人化を解消</strong></li>
+        <li><span class="bullet">03</span> 写真データが蓄積し、<strong>経年変化を自動追跡</strong></li>
+        <li><span class="bullet">04</span> 既存の報告フォーマットに合わせて出力可能</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: AI Phone Agent -->
+<div class="slide slide-content" data-slide="6">
+  <p class="slide-label">Solution 02</p>
+  <h2>テナントからの電話を<br><em>AIが24時間</em>対応</h2>
+  <div class="feature-layout">
+    <div class="feature-visual">
+      <div class="mock">
+        <span class="mock-highlight">📞 着信: テナント 302号室</span><br><br>
+        🤖 「お電話ありがとうございます。設備に関するお問い合わせですね。どのような状況でしょうか？」<br><br>
+        👤 「エアコンが動かないんです。リモコンを押しても反応しなくて...」<br><br>
+        🤖 「302号室のエアコンが動作しないとのこと、承知しました。ランプの点滅はありますか？」<br><br>
+        👤 「赤いランプが点滅しています」<br><br>
+        🤖 「エラーコードの可能性があります。本日中に担当者が確認に伺います。チケットを作成しました。」<br><br>
+        <span class="mock-highlight">→ チケット #FM-0892 自動起票完了</span>
+      </div>
+    </div>
+    <div>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span> <strong>24時間365日</strong>対応。夜間・休日の問い合わせも逃さない</li>
+        <li><span class="bullet">02</span> 状況ヒアリング→<strong>チケット自動起票</strong>→担当者に即通知</li>
+        <li><span class="bullet">03</span> 対応履歴が自動蓄積。<strong>同じ質問への回答精度が向上</strong></li>
+        <li><span class="bullet">04</span> 問い合わせ対応工数を<strong>50-70%削減</strong></li>
+      </ul>
+      <div class="impact-row" style="margin-top: 32px;">
+        <div class="impact-item">
+          <div class="impact-num">50-70%</div>
+          <div class="impact-label">対応工数削減</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-num">24h</div>
+          <div class="impact-label">365日対応</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Document AI Search -->
+<div class="slide slide-content" data-slide="7">
+  <p class="slide-label">Solution 03</p>
+  <h2>設備台帳・図面を<br><em>AIに聞くだけ</em>で即回答</h2>
+  <div class="feature-layout">
+    <div class="feature-visual">
+      <div class="mock">
+        <span class="mock-highlight">💬 質問を入力してください</span><br><br>
+        👤 「B棟3階の空調設備の型番と前回メンテナンス日を教えて」<br><br>
+        🤖 以下の情報が見つかりました:<br><br>
+        <span class="mock-highlight">■ B棟 3F 空調設備</span><br>
+        型番: DAIKIN SZRC140BF<br>
+        設置日: 2019-06-15<br>
+        前回メンテナンス: 2025-11-22<br>
+        次回推奨: <span class="mock-highlight">2026-05-22</span><br>
+        参照元: 設備台帳 p.47 / 点検記録 #2025-1122<br><br>
+        <span class="mock-highlight">📎 関連図面を表示 →</span>
+      </div>
+    </div>
+    <div>
+      <ul class="feature-points">
+        <li><span class="bullet">01</span> PDF・Excel・図面を横断。<strong>自然言語で検索</strong></li>
+        <li><span class="bullet">02</span> ベテランの頭の中にしかなかった情報を<strong>誰でもアクセス可能に</strong></li>
+        <li><span class="bullet">03</span> 新人の立ち上がり速度が<strong>3倍に向上</strong></li>
+        <li><span class="bullet">04</span> メンテナンス期限の<strong>自動アラート</strong>も設定可能</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: Predictive Maintenance -->
+<div class="slide slide-content" data-slide="8">
+  <p class="slide-label">Solution 04</p>
+  <h2>壊れる前にわかる。<br><em>予測保全</em>AI</h2>
+  <p class="lead">設備の稼働データ・点検履歴をAIが分析し、故障・交換時期を予測。突発故障による緊急対応コストを削減。</p>
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>データ蓄積</h3>
+      <p>点検記録・稼働ログ・修繕履歴をAIが学習。設備ごとの劣化パターンを把握</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚠️</div>
+      <h3>事前アラート</h3>
+      <p>「この設備は2ヶ月以内に故障する確率が高い」を事前に通知。計画的に対応可能</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>コスト削減</h3>
+      <p>突発故障の緊急対応コストを削減。修繕計画の最適化で年間メンテナンス費用を圧縮</p>
+    </div>
+  </div>
+  <div class="impact-row" style="margin-top: 40px;">
+    <div class="impact-item">
+      <div class="impact-num">40%</div>
+      <div class="impact-label">緊急対応コスト削減</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-num">25%</div>
+      <div class="impact-label">設備寿命延長</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-num">3x</div>
+      <div class="impact-label">計画保全の精度向上</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: FM Community App -->
+<div class="slide slide-content" data-slide="9">
+  <p class="slide-label">Solution 05 — New Business</p>
+  <h2>例えば — <em>こんなもの</em>に<br>ニーズはありませんか？</h2>
+  <p class="lead">FM業界特化のコミュニティアプリ。担当者同士がつながり、ノウハウを共有し、AIがアシストする。</p>
+  <div class="community-features">
+    <div class="comm-feat">
+      <div class="feat-icon">💬</div>
+      <h4>トラブル事例の共有</h4>
+      <p>「この設備のトラブル、他社はどう対応した？」を業界横断で共有。AIが過去事例から最適解を提案</p>
+    </div>
+    <div class="comm-feat">
+      <div class="feat-icon">🤖</div>
+      <h4>FM特化AI Q&A</h4>
+      <p>質問を投げるだけで、蓄積された事例・マニュアル・法規から即回答。ベテランに聞く感覚で使える</p>
+    </div>
+    <div class="comm-feat">
+      <div class="feat-icon">📰</div>
+      <h4>法改正・補助金の自動配信</h4>
+      <p>FM関連の法改正・新技術・補助金情報をAIが収集・要約。必要な情報だけ届く</p>
+    </div>
+    <div class="comm-feat">
+      <div class="feat-icon">👥</div>
+      <h4>業者マッチング</h4>
+      <p>設備メーカー・施工業者をエリア×専門分野で検索。見積もり依頼まで完結</p>
+    </div>
+    <div class="comm-feat">
+      <div class="feat-icon">📊</div>
+      <h4>コストベンチマーク</h4>
+      <p>自社のFMコストを業界平均と比較。「うちは清掃費が高すぎ？」をデータで判断</p>
+    </div>
+    <div class="comm-feat">
+      <div class="feat-icon">🎓</div>
+      <h4>FM資格の学習支援</h4>
+      <p>ファシリティマネジャー資格等の学習をAIがサポート。業界全体の底上げに</p>
+    </div>
+  </div>
+  <p class="lead" style="margin-top: 32px; font-size: 16px;">これはあくまで一例です。Kimさんの知見から「本当に欲しいもの」を一緒に見つけたい。</p>
+</div>
+
+<!-- Slide 10: Partnership -->
+<div class="slide slide-content" data-slide="10">
+  <p class="slide-label">Partnership</p>
+  <h2>一緒に<em>どう組むか</em></h2>
+  <p class="lead">Kimさんの業界知見・信頼関係 x WE UPのAI実装力。まず1社から始めましょう。</p>
+  <table class="slide-table">
+    <thead>
+      <tr>
+        <th>パターン</th>
+        <th>Kimさんの役割</th>
+        <th>WE UPの役割</th>
+        <th>収益モデル</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>A. 紹介型</strong></td>
+        <td>顧客を紹介</td>
+        <td>提案・開発すべて</td>
+        <td>紹介フィー</td>
+      </tr>
+      <tr class="recommended">
+        <td><strong>B. 共同提案型 ★</strong></td>
+        <td>業界知見・関係構築・提案同席</td>
+        <td>AI提案策定・開発・納品</td>
+        <td>フィーをシェア</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="cards" style="grid-template-columns: 1fr 1fr; margin-top: 40px;">
+    <div class="card">
+      <h3>Phase 1: まず1社やってみる</h3>
+      <p>100万円〜 / 2-3週間<br>ヒアリング → AI事業案策定 → 動くMVPを納品<br>「やる/やらない」を動くもので判断</p>
+    </div>
+    <div class="card">
+      <h3>Phase 2: うまくいったら広げる</h3>
+      <p>月額ベース or レベシェア<br>本開発 → リリース → グロース支援<br>Phase 1の結果を見て判断</p>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">← Prev</button>
+  <span class="page-num" id="pageNum">1 / 10</span><!-- auto-calculated by JS -->
+  <button onclick="nextSlide()">Next →</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = document.querySelectorAll('.slide').length;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    document.getElementById('pageNum').textContent = `${n} / ${total}`;
+  }
+
+  function nextSlide() { if (current < total) { current++; showSlide(current); } }
+  function prevSlide() { if (current > 1) { current--; showSlide(current); } }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  });
+</script>
+
+</body>
+</html>
